@@ -40,5 +40,6 @@ module.exports = {
         flags: 'a'
       })
     }]
-  }
+  },
+  salt: process.env.SALT
 };

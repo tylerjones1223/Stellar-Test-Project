@@ -19,5 +19,6 @@ module.exports = deepCopy(defaults, {
       var line = sprintf('[%s] %s\n', new Date().toJSON(), s);
       sqlLog.write(line);
     }
-  }
+  },
+  salt: 'salt'
 });

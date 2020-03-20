@@ -7,6 +7,7 @@ var bunyan = require('bunyan');
 var config = require(__dirname + '/config');
 var log = bunyan.createLogger(config.appLog);
 var handlers = require(__dirname + '/handlers');
+var middleware = require(__dirname + '/middleware');
 var models = require(__dirname + '/lib/db').models;
 
 var app = restify.createServer({
@@ -56,5 +57,42 @@ app.get('/echo', function echo (req, res, next) {
   res.send(200, 'Hello World\n');
   next();
 });
+
+app.get('/maintenanceRecords/:id',      middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_view'),
+                                        handlers.maintenanceRecords.getMaintenanceRecord);
+
+app.get('/maintenanceRecords',          middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_list'),
+                                        handlers.maintenanceRecords.getMaintenanceRecords);
+
+app.get('/maintenanceRecords/search',          middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_search'),
+                                        handlers.maintenanceRecords.searchMaintenanceRecords);
+
+app.get('/users',                       handlers.users.getUsers);
+
+app.get('/roles',                       handlers.roles.getRoles);
+
+app.post('/users',                      handlers.users.createUser);
+
+app.post('/roles',                      handlers.roles.createRole);
+
+app.post('/maintenanceRecords',         middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_add'),
+                                        handlers.maintenanceRecords.createMaintenanceRecord);
+
+app.post('/units/:maintenanceRecordId', middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_add'),
+                                        middleware.addMaintenanceRecordToScope, 
+                                        handlers.units.createUnit);
+
+app.put('/maintenanceRecords/:id',      middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_update'),
+                                        handlers.maintenanceRecords.updateMaintenanceRecords);
+
+app.del('/maintenanceRecords/:id',      middleware.addUserToScope,
+                                        middleware.permissionsGranter('maintenance_records_delete'),
+                                        handlers.maintenanceRecords.deleteMaintenanceRecord)
 
 module.exports = app;
