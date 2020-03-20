@@ -7,7 +7,7 @@ module.exports = {
   server: {
     name: 'stellar-test-project',
     host: '0.0.0.0',
-    port: 4434
+    port: process.env.PORT || 4434
   },
   db: {
     adapter: process.env.DB_ADAPTER,
