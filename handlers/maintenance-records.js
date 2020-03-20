@@ -60,7 +60,7 @@ function getMaintenanceRecords (req, res, next) {
 function searchMaintenanceRecords (req, res, next) {
 	var MaintenanceRecords = req.db.maintenanceRecords;
 	var searchParams = JSON.parse(req.body);
-console.log(searchParams)
+
 	MaintenanceRecords.findAll({
 		where: searchParams
 	})
