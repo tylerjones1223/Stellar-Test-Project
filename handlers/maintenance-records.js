@@ -7,9 +7,12 @@ function createMaintenanceRecord (req, res, next) {
 
 	MaintenanceRecords.create(maintenanceRecord)
 	.then(function (rec) {
-		res.send(201, rec);
+		return rec.addMaintenanceTypes(maintenanceRecord.type)
+		.then(function () {
+			res.send(201, rec);
 
-		return next();
+			return next();
+		});
 	})
 	.catch(function (error) {
 		req.log.error({
