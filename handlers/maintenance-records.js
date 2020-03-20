@@ -92,7 +92,7 @@ function updateMaintenanceRecords (req, res, next) {
 			id: maintenanceRecordId
 		},
 		fields: [
-			'completedAt',
+			'completedOn',
 			'type',
 			'customType',
 			'dueAt',
